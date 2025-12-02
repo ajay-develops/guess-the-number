@@ -11,6 +11,9 @@ jobs:
   build_release:
     # Use a Linux runner for building (you can add other OS runners too)
     runs-on: ubuntu-latest 
+    
+    permissions:
+      contents: write
 
     steps:
       - name: ⬇️ Checkout code
