@@ -1,0 +1,37 @@
+name: Rust Release
+
+on:
+  # Triggers the workflow on push events, but only for tags
+  push:
+    tags:
+      # Only run for tags starting with 'v', such as v1.0.0
+      - 'v*' 
+
+jobs:
+  build_release:
+    # Use a Linux runner for building (you can add other OS runners too)
+    runs-on: ubuntu-latest 
+
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: ⚙️ Build release binary
+        run: cargo build --release
+
+      - name: 📦 Get binary path
+        id: vars
+        shell: bash
+        run: echo "asset_path=target/release/guess-the-number" >> $GITHUB_OUTPUT
+
+      # This action creates the release on GitHub and uploads the binary
+      - name: 📤 Create GitHub Release and upload binary
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') # Only run if triggered by a tag push
+        with:
+          files: ${{ steps.vars.outputs.asset_path }}
+          # The tag is automatically used as the release version
+          # The name and body can be customized

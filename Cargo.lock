@@ -22,7 +22,7 @@ dependencies = [
 
 [[package]]
 name = "guess-the-number"
-version = "1.91.1"
+version = "1.93.1"
 dependencies = [
  "rand",
 ]
